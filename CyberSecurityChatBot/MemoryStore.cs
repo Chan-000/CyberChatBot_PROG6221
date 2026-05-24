@@ -14,6 +14,9 @@ namespace CyberSecurityChatBot
    {
         //Stores the user's name
         public string userName { get; set; } = "";
+
+        //Stores favourite cybersecurity topic
+        public string FavouriteTopic { get; set; } = "";
         
         // Dictionary used for flexible memory storage
         private Dictionary<string, string> memory = new Dictionary<string, string>();

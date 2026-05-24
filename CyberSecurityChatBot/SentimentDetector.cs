@@ -75,7 +75,7 @@ namespace CyberSecurityChatBot
                         "love it"
                     }
 
-                },
+                }
 
             };
         }
