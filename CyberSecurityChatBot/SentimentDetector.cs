@@ -65,6 +65,7 @@ namespace CyberSecurityChatBot
                 {
                     Sentiment.Happy, new List<string>
                     {
+                        "happy",
                         "great",
                         "thanks",
                         "awesome",
@@ -98,21 +99,21 @@ namespace CyberSecurityChatBot
 
 
         // Return empathetic chatbot response
-        public string GetSentimentResponse(Sentiment sentiment)
+        public string GetSentimentResponse(Sentiment sentiment, string userName)
         {
             switch (sentiment)
             {
                 case Sentiment.Worried:
-                    return "It's understandable to feel worried about cybersecurity threats.";
+                    return "It's understandable to feel worried, " + userName + ". Cybersecurity threats can be scary, but there are ways to stay safe.\n\n";
 
                 case Sentiment.Curious:
-                    return "I am glad you want to learn more about staying safe online.";
+                    return "I am glad you are curious about cybersecurity, " + userName + ". Learning more is one of the best ways to protect yourself online.\n\n";
 
                 case Sentiment.Frustrated:
-                    return "Cybersecurity can feel confusing sometimes, but l will help you understand it better.";
+                    return "Cybersecurity can feel overwhelming but don't worry " + userName + ". I'm here to help make it easier to understand.\n\n";
 
                 case Sentiment.Happy:
-                    return "I am happy that you are enjoying learning about cybersecurity.";
+                    return "That's great to hear, " + userName + "! Staying positive while learning about online safety is important.\n\n";
 
                 default: 
                     return "";

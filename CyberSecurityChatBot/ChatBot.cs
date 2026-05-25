@@ -33,7 +33,8 @@ namespace CyberSecurityChatBot
         // Initial greeting shown at startup
         public string GetGreeting()
         {
-            return "Hello! Welcome to the Cybersecurity Awareness Chatbot.\n Please tell me your name to begin.";
+            return "Hello and Welcome to CyberBot! I'm your cybersecurity awareness assistant, here to help you stay safe online.\n" +
+                   "Before we begin, what is your name.";
         }
 
         // Main chatbot processing method
@@ -54,7 +55,16 @@ namespace CyberSecurityChatBot
                 memoryStore.userName = input;
                 awaitingName = false;
 
-                return "Nice to meet you, " + memoryStore.userName + "! Ask me anything about cybersecurity.";
+                return "Nice to meet you, " + memoryStore.userName +
+                    "!\n\nYou can ask me about:\n\n"+
+                    "• Password safety\n" +
+                    "• Phishing\n" +
+                    "• Privacy\n" +
+                    "• Malware\n" +
+                    "• Online scams\n" +
+                    "• Firewall\n" +
+                    "• Ransomware\n\n"+
+                    "How can l help you today?";
             }
 
             // follow-up handling
@@ -64,7 +74,7 @@ namespace CyberSecurityChatBot
                 {
                     string extraResponse = keywordResponder.GetResponse(lastTopic);
 
-                    return "Here is more information about " + lastTopic + ": " + extraResponse; 
+                    return "Of course, " + memoryStore.userName + ". Here is another tip or more information about " + lastTopic + ": " + extraResponse; 
                 }
 
                 return "Please choose a cybersecurity topic first.";
@@ -79,14 +89,14 @@ namespace CyberSecurityChatBot
                     {
                         memoryStore.FavouriteTopic = keyword;
 
-                        return "Great! l will remember that you are interested in " + keyword + ".";
+                        return "Great! l will remember that you are interested in " + keyword + ".\n\n" + keywordResponder.GetResponse(keyword);
                     }
                 }
             }
 
             // detect sentiment
             Sentiment detectedSentiment = sentimentDetector.Detect(input);
-            string sentimentResponse = sentimentDetector.GetSentimentResponse(detectedSentiment);
+            string sentimentResponse = sentimentDetector.GetSentimentResponse(detectedSentiment, memoryStore.userName);
 
             // detect cybersecurity keywords
             string keywordResponse = keywordResponder.GetResponse(input);
@@ -104,7 +114,7 @@ namespace CyberSecurityChatBot
                 }
 
                 // personalised opener
-                string memoryResponse = memoryStore.GetPersonalisedOpener();
+                string memoryResponse = memoryStore.GetPersonalisedOpener(input);
                 return sentimentResponse + memoryResponse + keywordResponse;
             }
 
@@ -114,9 +124,9 @@ namespace CyberSecurityChatBot
                 return "I'm just code and ready to help you stay safe online";
             }
 
-            if (input.Contains("What can you do"))
+            if (input.Contains("what can you do"))
             {
-                return "l can help you learn about passwords, phishing, scams, malware, privacy, firewalls and online safety";
+                return "I can help you learn about cybersecurity topics like passwords, phishing scams, malware, online privacy, ransomware, firewalls and online safety";
             }
 
             if (input.Contains("purpose"))
@@ -125,7 +135,8 @@ namespace CyberSecurityChatBot
             }
 
             // Default fallback response
-            return "L am not sure l understand. Can you please try rephrasing your question?";
+            return "I am not sure l understand. Can you please try rephrasing your question?";
         }
+
     }
 }

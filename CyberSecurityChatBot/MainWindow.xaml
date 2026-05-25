@@ -6,36 +6,38 @@
         xmlns:local="clr-namespace:CyberSecurityChatBot"
         mc:Ignorable="d"
         Title="CyberSecurity ChatBot"
-        Height="700" Width="1000"
-        Background="#0B1F33">
+        Height="650" Width="900"
+        Background="#1E1E2F"
+        WindowStartupLocation="CenterScreen">
 
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Header section-->
         <Border Grid.Row="0" 
-                Background="#102A43" 
+                Background="#0A2540" 
                 CornerRadius="10"
                 Padding="10"
                 Margin="0,0,0,10">
             
             <StackPanel Orientation="Horizontal">
                 
-                <TextBlock Text=" CyberBot"
+                <TextBlock Text=" CYBERSECURITY AWARENESS CHATBOT"
                            FontSize="28"
-                           Foreground="Cyan" 
+                           Foreground="white" 
                            FontWeight="Bold"
                            VerticalAlignment="Center"/>
 
                 <TextBlock x:Name="AsciiArtText"
                            FontFamily="Calibri"
-                           FontSize="14"
-                           Foreground="white"
+                           FontSize="10"
+                           FontWeight="ExtraBold"
+                           Foreground="Cyan"
                            Margin="15,0,0,0"
                            VerticalAlignment="Center"
                            TextWrapping="Wrap"/>
@@ -45,7 +47,7 @@
 
         <!-- Chat Display-->
         <Border Grid.Row="1"
-                Background="#1B263B"
+                
                 CornerRadius="10"
                 Padding="10"
                 Margin="0,0,0,10">
@@ -64,14 +66,14 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             
             <!-- User Input -->
             <TextBox x:Name="UserInputTextBox"
                        Grid.Column="0"
                        FontSize="16"
-                       Margin="0,0,10,0"
+                       Height="60"
                        VerticalAlignment="Center"
                        KeyDown="UserInputTextBox_KeyDown"/>
             
@@ -80,9 +82,9 @@
                     Grid.Column="1"
                     Content="Send"
                     FontSize="24"
-                    FontWeight="Bold"
+                    FontWeight="ExtraBold"
                     Background="Cyan"
-                    Foreground="Black"
+                    Foreground="#1E1E2F"
                     Click="SendButton_Click"/>
         </Grid>
     </Grid>

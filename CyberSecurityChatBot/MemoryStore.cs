@@ -40,13 +40,20 @@ namespace CyberSecurityChatBot
         }
 
         // creates a personalised sentence
-        public string GetPersonalisedOpener()
+        public string GetPersonalisedOpener(string currentInput)
         {
-            if (!string.IsNullOrEmpty(FavouriteTopic))
-            {
-                return "As someone interested in " + FavouriteTopic + ", here is some advice: ";
-            }
+            currentInput = currentInput.ToLower();
 
+           // Only use memory sometimes instead of every response
+           if (!string.IsNullOrEmpty(FavouriteTopic))
+            {
+                // only trigger when topic is related
+                if (currentInput.Contains(FavouriteTopic))
+                {
+                    return "Since you are interested in " + FavouriteTopic + ", " + userName + ", here is some advice: ";
+                }
+
+            }
             return "";
         }
    }

@@ -15,6 +15,7 @@ namespace CyberSecurityChatBot
 
         // Random object for random responses
         private Random random = new Random();
+        private string lastResponse = "";
 
         // Constructor - Initialises all cybersecurity topics
         public KeywordResponder ()
@@ -24,9 +25,10 @@ namespace CyberSecurityChatBot
                 {
                     "password", new List<string>
                     {
-                        "Use strong passwords with uppercase, lowercase, numbers and symbols.",
-                        "Avoid using personal information in your passwords.",
-                        "Use a different password for every important account."
+                        "Strong passwords should include uppercase letters, lowercase letters, numbers, and symbols to make them harder to guess.",
+                        "Avoid using names, birthdays, or simple words in your passwords because hackers can guess them easily.",
+                        "Using the same password for multiple accounts is risky because if one account is hacked, the others may also become vulnerable.",
+                        "A password manager can help you create and safely store strong passwords for all your accounts."
                     }
 
                 },
@@ -34,9 +36,10 @@ namespace CyberSecurityChatBot
                 {
                     "phishing", new List<string>
                     {
-                        "Never click suspicious email links pretending to from banks.",
-                        "Be careful of fake SMS messages asking for your login details.",
-                        "Always verify suspicious messages before responding."
+                        "Phishing attacks often pretend to come from trusted organisations like banks or delivery to trick people into sharing personal information.",
+                        "Be cautious of emails or SMS messages asking you to click links or urgently confirm account details.",
+                        "If a message looks suspicious, contact the company directly using their official website or phone number instead of replying to the message.",
+                        "Scammers often create fake login pages that look real, so always double-check website addresses before entering passwords."
                     }
 
                 },
@@ -44,9 +47,10 @@ namespace CyberSecurityChatBot
                 {
                     "privacy", new List<string>
                     {
-                        "Review your social media privacy settings regularly.",
-                        "Avoid sharing sensitive personal information online.",
-                        "Use two-factor authentication to protect your accounts."
+                        "Protecting your privacy online is very important because personal information shared publicly can sometimes be used by cybercriminals for scams or identity theft.",
+                        "Review your social media and account privacy settings regularly so you can control who is able to view your information and online activity.",
+                        "Using two-factor authentication together with strong passwords can greatly improve your online privacy and make it harder for attackers to access your accounts.",
+                        "Be careful about the personal details you share online, such as your phone number, location, or banking information, especially on public platforms."
                     }
 
                 },
@@ -54,9 +58,10 @@ namespace CyberSecurityChatBot
                 {
                     "malware", new List<string>
                     {
-                        "Install trusted antivirus software to protect your device.",
-                        "Avoid downloading files from unknown websites.",
-                        "Keep your software updated to reduce malware risks."
+                        "Ransomware is a type of malware that locks or encrypts your files and demands money before you can access them again.",
+                        "Never open suspicious email attachments or download files from unknown websites because ransomware often spreads through fake links and attachments.",
+                        "Backing up your important files regularly to cloud storage or an external drive can protect you from losing valuable information during a ransomware attack.",
+                        "Keeping your operating system and antivirus software updated helps close security vulnerabilities that ransomware attackers try to exploit."
                     }
 
                 },
@@ -64,9 +69,10 @@ namespace CyberSecurityChatBot
                 {
                     "scam", new List<string>
                     {
-                        "Scammers often pretend to be trusted organisations.",
-                        "Never share OTPs and PINs with anyone.",
-                        "If anyone sounds to good to be true, it probably is."
+                        "Online scams often try to create panic or urgency so that people make quick decisions without thinking carefully.",
+                        "Never share OTPs, passwords, or banking PINs with anyone, even if they claim to be from your bank.",
+                        "Scammers sometimes pretend to be trusted companies or government organisations to trick victims into sending money or personal information.",
+                        "If an offer sounds too good to be true, it is usually a scam."
                     }
 
                 },
@@ -74,9 +80,10 @@ namespace CyberSecurityChatBot
                 {
                     "ransomware", new List<string>
                     {
-                        "Ransomware locks your files and demands payment to restore the, so never open email attachments from unknown senders..",
-                        "Always back up important data to an external drive or cloud storage.",
-                        "Keep your operating system updated to patch vulnerabilities ransomware exploits."
+                        "Ransomware is a type of malware that locks or encrypts your files and demands money before you can access them again.",
+                        "Never open suspicious email attachments or download files from unknown websites because ransomware often spreads through fake links and attachments.",
+                        "Backing up your important files regularly to cloud storage or an external drive can protect you from losing valuable information during a ransomware attack.",
+                        "Keeping your operating system and antivirus software updated helps close security vulnerabilities that ransomware attackers try to exploit."
                     }
 
                 },
@@ -84,9 +91,10 @@ namespace CyberSecurityChatBot
                 {
                     "firewall", new List<string>
                     {
-                        "Enable your device firewall to block unathorised network traffic.",
-                        "A firewall acts as your first line of defence against external attacks.",
-                        "Regularly review your firewall rules to ensure they are up to date."
+                        "A firewall acts like a protective barrier between your computer and the internet by blocking suspicious or unauthorised traffic.",
+                        "Always keep your firewall enabled because it helps prevent hackers and malicious programs from accessing your device without permission.",
+                        "Firewalls monitor incoming and outgoing network activity and can stop dangerous connections before they reach your system.",
+                        "It is a good idea to check your firewall settings occasionally to ensure your device is properly protected against online threats."
                     }
 
                 }
@@ -100,13 +108,24 @@ namespace CyberSecurityChatBot
 
             foreach (var item in responses)
             {
+                // keyword matching
                 if (input.Contains(item.Key)) 
                 {
                     List<string> possibleResponses = item.Value;
 
-                    int index = random.Next(possibleResponses.Count);
+                    string selectedResponse = "";
 
-                    return possibleResponses[index];
+                    //prevent imediate repetition
+                    do
+                    {
+                        int index = random.Next(possibleResponses.Count);
+                        selectedResponse = possibleResponses[index];
+
+                    } while (selectedResponse == lastResponse && possibleResponses.Count > 1);
+
+                    lastResponse = selectedResponse;
+
+                    return selectedResponse;
                 }
                 
             }
