@@ -36,9 +36,10 @@ greeting.wav must be placed inside the main project folder 'CyberSecurityChatBot
 The file properties should be Build Action = Content and Copy to Output Directory
 
 ## ChatBot GUI
-
+<img width="889" height="647" alt="Chatbot GUI" src="https://github.com/user-attachments/assets/5946112d-d205-4806-8ce3-62b5981fa5fe" />
 
 ## GitHub Actions CI
-
+<img width="650" height="198" alt="CI Actions" src="https://github.com/user-attachments/assets/5220ed7c-9864-4bd7-873c-053ccac50e2f" />
 
 ## YouTube video link
+https://youtu.be/vEsRQTA_Swo
