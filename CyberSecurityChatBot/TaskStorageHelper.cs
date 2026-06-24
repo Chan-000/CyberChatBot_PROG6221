@@ -12,7 +12,7 @@ namespace CyberSecurityChatBot
     public class TaskStorageHelper
     {
         private const string FilePath = "tasks.json";
-   
+
         //load all task from json file
         public List<CyberTask> LoadTasks()
         {
@@ -25,8 +25,7 @@ namespace CyberSecurityChatBot
 
                 string json = File.ReadAllText(FilePath);
 
-                return JsonConvert.DeserializeObject<List<CyberTask>>(json)
-                    ?? new List<CyberTask>();
+                return JsonConvert.DeserializeObject<List<CyberTask>>(json) ?? new List<CyberTask>();
             }
             catch
             {

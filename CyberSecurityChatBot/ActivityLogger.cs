@@ -27,14 +27,14 @@ namespace CyberSecurityChatBot
 
             var recentEntries = _log.TakeLast(count).ToList();
 
-            StringBuilder sb = new StringBuilder("Here's a summary of recent actions:\n\n");
+            string result ="Here's a summary of recent actions:\n\n";
 
             for (int i = 0; i < recentEntries.Count; i++)
             {
-                sb.AppendLine($"{i + 1}. {recentEntries[i]}");
+                result += $"{i + 1}. {recentEntries[i]}\n";
             }
 
-            return sb.ToString();
+            return result;
         }
 
         //Get all entries (for "show more")
@@ -45,13 +45,13 @@ namespace CyberSecurityChatBot
                 return "No activity recorded yet.";
             }
 
-            StringBuilder sb = new StringBuilder("Full Activity Log:\n\n");
+            string result = "Full Activity Log:\n\n";
 
             for (int i = 0; i < _log.Count; i++)
             {
-                sb.AppendLine($"{i + 1}. {_log[i]}");
+                result += $"{i + 1}. {_log[i]}\n";
             }
-            return sb.ToString();
+            return result;
         }
 
         //Get total number of log entries

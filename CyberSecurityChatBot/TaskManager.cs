@@ -11,6 +11,7 @@ namespace CyberSecurityChatBot
         public TaskManager()
         {
             _storage = new TaskStorageHelper();
+            
         }
 
         //Creates a new task
@@ -18,6 +19,7 @@ namespace CyberSecurityChatBot
         public string AddTask(string title, string description, string reminder)
         {
             _storage.AddTasks(title, description, reminder);
+            ActivityLogger.Log($"Task added: '{title}'");
 
             return $"Task '{title}' added successfully.";
         }
@@ -32,12 +34,17 @@ namespace CyberSecurityChatBot
         public void MarkAsComplete(int id)
         {
             _storage.MarkAsComplete(id);
+
+            ActivityLogger.Log($"Task marked complete (ID: {id})");
         }
 
         //Delete task
         public void DeleteTask(int id)
         {
             _storage.DeleteTask(id);
+
+            ActivityLogger.Log($"Task deleted (ID: {id})");
+            
         }
     }
 }
