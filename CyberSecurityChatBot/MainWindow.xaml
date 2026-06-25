@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CyberSecurityChatBot"
         mc:Ignorable="d"
         Title="CyberSecurity ChatBot"
-        Height="650" Width="900"
+        Height="700" Width="1000"
         Background="#1E1E2F"
         WindowStartupLocation="CenterScreen">
 
@@ -45,22 +45,83 @@
             </StackPanel>
         </Border>
 
-        <!-- Chat Display-->
-        <Border Grid.Row="1"
-                
-                CornerRadius="10"
-                Padding="10"
-                Margin="0,0,0,10">
+        <!-- Part 3-->
+        <Grid Grid.Row="1">
 
-            <ScrollViewer x:Name="ChatScrollViewer"
-                          VerticalScrollBarVisibility="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="ChatDisplay"
-                           Foreground="White"
-                           FontSize="16"
-                           TextWrapping="Wrap"/>
-            </ScrollViewer>
-        </Border>
+            <!-- Chat Area-->
+            <Border Grid.Column="0"
+                    CornerRadius="10"
+                    Padding="10"
+                    Margin="0,0,0,10">
+
+                <ScrollViewer x:Name="ChatScrollViewer"
+                              VerticalScrollBarVisibility="Auto">
+
+                    <TextBlock x:Name="ChatDisplay"
+                               Foreground="White"
+                               FontSize="16"
+                               TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </Border>
+            
+            <!-- Task assistany Panel-->
+            <Border Grid.Column="1"
+                    Background="#2D2D44"
+                    CornerRadius="10"
+                    Padding="10"
+                    Margin="0,0,0,10">
+
+                <StackPanel>
+
+                    <TextBlock Text="Task Assistant"
+                               FontSize="19"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Margin="0,0,0,10"/>
+
+                    <TextBox x:Name="TaskTitleTextBox"
+                               Margin="0,0,0,5"                      
+                               Height="26"/>
+
+                    <TextBox x:Name="TaskDescriptionTextBox"
+                             Margin="0,0,0,5"
+                             Height="42"
+                             TextWrapping="Wrap"/>
+
+                    <TextBox x:Name="TaskReminderTextBox"
+                             Margin="0,0,0,10"
+                             Height="27"/>
+
+                    <Button x:Name="AddTaskButton"
+                            Content="Add Task"
+                            Height="29"
+                            Margin="0,0,0,10"
+                            Click="AddTaskButton_Click"/>
+
+                    <ListBox x:Name="TaskListBox"
+                             Height="190"
+                             Margin="0,0,0,10"/>
+
+                    <Button x:Name="CompleteTaskButton"
+                            Content="Mark Complete"
+                            Height="29"
+                            Margin="0,0,0,5"
+                            Click="CompleteTaskButton_Click"/>
+
+                    <Button x:Name="DeleteTaskButton"
+                            Content="Delete Task"
+                            Height="29"
+                            Click="DeleteTaskButton_Click"/>
+
+                </StackPanel>
+            </Border>
+        </Grid>
+        
 
         <!-- Input section-->
         <Grid Grid.Row="2">

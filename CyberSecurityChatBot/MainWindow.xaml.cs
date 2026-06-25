@@ -11,6 +11,9 @@ namespace CyberSecurityChatBot
         // Main chatbot object
         private ChatBot chatBot;
 
+        //taskmanager object
+        private TaskManager _taskManager;
+
         // Constructor
         public MainWindow()
         {
@@ -27,6 +30,9 @@ namespace CyberSecurityChatBot
 
             // Display initial greeting
             AppendBotMessage(chatBot.GetGreeting());
+
+            // creates TaskManager object
+            _taskManager = new TaskManager();
         }
 
         // loads ASCII art into the GUI
@@ -100,5 +106,24 @@ namespace CyberSecurityChatBot
         {
             ChatDisplay.Text += "\nCyberBot: " + message + "\n";
         }
+
+        //
+        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //
+        private void CompleteTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //
+        private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
