@@ -60,10 +60,6 @@ namespace CyberSecurityChatBot
             return _log.Count;
         }
 
-        // Clear all logs
-        public void ClearLog()
-        {
-            _log.Clear();
-        }
+        
     }
 }

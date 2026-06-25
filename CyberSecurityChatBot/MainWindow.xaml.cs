@@ -33,6 +33,10 @@ namespace CyberSecurityChatBot
 
             // creates TaskManager object
             _taskManager = new TaskManager();
+
+            LoadTasks();
+
+            RefreshTaskList();
         }
 
         // loads ASCII art into the GUI
@@ -108,21 +112,73 @@ namespace CyberSecurityChatBot
         }
 
         //
+        private void LoadTasks()
+        {
+            TaskListBox.Items.Clear();
+
+            foreach (CyberTask task in _taskManager.GetAllTasks())
+            {
+                string status = task.IsComplete ? "[Completed]" : "[Pending]";
+
+                TaskListBox.Items.Add($"{task.Id} - {task.Title} {status}");
+            }
+        }
+        
+        //
+        private void RefreshTaskList()
+        {
+            TaskListBox.ItemsSource = null;
+            TaskListBox.ItemsSource = _taskManager.GetAllTasks();
+        }
+
+        //
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
+            string title = TaskTitleTextBox.Text;
+            string description = TaskDescriptionTextBox.Text;
+            string reminder = TaskReminderTextBox.Text;
+
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                MessageBox.Show("Please enter a task title.");
+                return;
+            }
+
+            _taskManager.AddTask(title, description, reminder);
+            LoadTasks();
+
+            TaskTitleTextBox.Clear();
+            TaskDescriptionTextBox.Clear();
+            TaskReminderTextBox.Clear();
 
         }
 
         //
         private void CompleteTaskButton_Click(object sender, RoutedEventArgs e)
         {
+            CyberTask? selectedTask = TaskListBox.SelectedItem as CyberTask;
 
+            if (selectedTask != null)
+            {
+                _taskManager.MarkAsComplete(selectedTask.Id);
+                MessageBox.Show("Task marked as complete!");
+                RefreshTaskList();
+            }
         }
 
         //
         private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
         {
+            CyberTask? selectedTask = TaskListBox.SelectedItem as CyberTask;
 
+            if (selectedTask != null)
+            {
+                _taskManager.DeleteTask(selectedTask.Id);
+
+                MessageBox.Show("Task deleted!");
+
+                RefreshTaskList();
+            }
         }
 
     }
