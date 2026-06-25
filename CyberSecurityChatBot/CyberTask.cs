@@ -20,5 +20,11 @@ namespace CyberSecurityChatBot
 
         public string CreatedAt { get; set; } = "";
 
+        public override string ToString()
+        {
+            string status = IsComplete ? "[Completed]" : "[Pending]";
+            return $"{Id} - {Title} {status}";
+        }
+
     }
 }

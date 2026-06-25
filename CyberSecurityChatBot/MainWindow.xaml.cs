@@ -36,7 +36,6 @@ namespace CyberSecurityChatBot
 
             LoadTasks();
 
-            RefreshTaskList();
         }
 
         // loads ASCII art into the GUI
@@ -114,29 +113,18 @@ namespace CyberSecurityChatBot
         //
         private void LoadTasks()
         {
-            TaskListBox.Items.Clear();
-
-            foreach (CyberTask task in _taskManager.GetAllTasks())
-            {
-                string status = task.IsComplete ? "[Completed]" : "[Pending]";
-
-                TaskListBox.Items.Add($"{task.Id} - {task.Title} {status}");
-            }
-        }
-        
-        //
-        private void RefreshTaskList()
-        {
             TaskListBox.ItemsSource = null;
             TaskListBox.ItemsSource = _taskManager.GetAllTasks();
+
         }
+        
 
         //
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            string title = TaskTitleTextBox.Text;
-            string description = TaskDescriptionTextBox.Text;
-            string reminder = TaskReminderTextBox.Text;
+            string title = TaskTitleTextBox.Text.Trim();
+            string description = TaskDescriptionTextBox.Text.Trim();
+            string reminder = TaskReminderTextBox.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -144,7 +132,9 @@ namespace CyberSecurityChatBot
                 return;
             }
 
-            _taskManager.AddTask(title, description, reminder);
+            string message = _taskManager.AddTask(title, description, reminder);
+            MessageBox.Show(message);
+            
             LoadTasks();
 
             TaskTitleTextBox.Clear();
@@ -158,12 +148,15 @@ namespace CyberSecurityChatBot
         {
             CyberTask? selectedTask = TaskListBox.SelectedItem as CyberTask;
 
-            if (selectedTask != null)
+            if (selectedTask == null)
             {
-                _taskManager.MarkAsComplete(selectedTask.Id);
-                MessageBox.Show("Task marked as complete!");
-                RefreshTaskList();
+                MessageBox.Show("Please select a task!");
+                return;
             }
+
+            _taskManager.MarkAsComplete(selectedTask.Id);
+            MessageBox.Show("Task marked as complete!");
+            LoadTasks();
         }
 
         //
@@ -171,14 +164,17 @@ namespace CyberSecurityChatBot
         {
             CyberTask? selectedTask = TaskListBox.SelectedItem as CyberTask;
 
-            if (selectedTask != null)
+            if (selectedTask == null)
             {
-                _taskManager.DeleteTask(selectedTask.Id);
-
-                MessageBox.Show("Task deleted!");
-
-                RefreshTaskList();
+                MessageBox.Show("Please select a task!");
+                return;
             }
+
+            _taskManager.DeleteTask(selectedTask.Id);
+
+            MessageBox.Show("Task deleted!");
+
+            LoadTasks();
         }
 
     }
