@@ -49,6 +49,16 @@ namespace CyberSecurityChatBot
 
             input = input.ToLower().Trim();
 
+            //Activity log commands
+            if (input.Contains("show activity log")||
+                input.Contains("what have you done for me")||
+                input.Contains("show log")||
+                input.Contains("recent actions")||
+                input.Contains("recent activity"))
+            {
+                return ActivityLogger.GetRecentLog();
+            }
+
             //Capture user name 
             if (awaitingName)
             {

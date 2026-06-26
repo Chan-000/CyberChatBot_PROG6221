@@ -39,7 +39,7 @@ namespace CyberSecurityChatBot
                         "True",
                         "False"
                     },
-                    CorrectAnswer = "False",
+                    CorrectAnswer = "B",
                     Explanation = "Each account should have a unique password, to avoid compromising all accounts",
                     IsTrueFalse = true
                 },
@@ -66,7 +66,7 @@ namespace CyberSecurityChatBot
                         "True",
                         "False"
                     },
-                    CorrectAnswer = "False",
+                    CorrectAnswer = "B",
                     Explanation = "Public Wi-Fi often unsecured, so hackers can exploit this weakness to steal personal information",
                     IsTrueFalse = true
                 },
@@ -93,7 +93,7 @@ namespace CyberSecurityChatBot
                         "True",
                         "False"
                     },
-                    CorrectAnswer = "True",
+                    CorrectAnswer = "A",
                     Explanation = "Antivirus software helps detect threats.",
                     IsTrueFalse = true
                 },
@@ -120,7 +120,7 @@ namespace CyberSecurityChatBot
                         "True",
                         "False"
                     },
-                    CorrectAnswer = "True",
+                    CorrectAnswer = "A",
                     Explanation = "Backups help restore lost files.",
                     IsTrueFalse = true
                 },
@@ -147,7 +147,7 @@ namespace CyberSecurityChatBot
                         "True",
                         "False"
                     },
-                    CorrectAnswer = "False",
+                    CorrectAnswer = "B",
                     Explanation = "Regular reviews improve security.",
                     IsTrueFalse = true
                 },
@@ -190,6 +190,25 @@ namespace CyberSecurityChatBot
         public string GetFeedback()
         {
             return _questions[_currentIndex - 1].Explanation;
+        }
+
+        //
+        public string GetCorrectAnswer()
+        {
+            QuizQuestion question = _questions[_currentIndex - 1];
+
+            if (question.IsTrueFalse)
+            {
+                if (question.CorrectAnswer == "A") return "True";
+                if (question.CorrectAnswer == "B") return "False";
+            }
+            return question.CorrectAnswer;
+        }
+
+        //
+        public int GetCurrentQuestionNumber()
+        {
+            return _currentIndex + 1;
         }
 
         public bool IsFinished()

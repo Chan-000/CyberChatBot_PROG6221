@@ -14,6 +14,9 @@ namespace CyberSecurityChatBot
         //taskmanager object
         private TaskManager _taskManager;
 
+        //QuizManager object
+        private QuizManager _quizManager;
+
         // Constructor
         public MainWindow()
         {
@@ -35,6 +38,9 @@ namespace CyberSecurityChatBot
             _taskManager = new TaskManager();
 
             LoadTasks();
+
+            // 
+            _quizManager = new QuizManager();
 
         }
 
@@ -118,6 +124,19 @@ namespace CyberSecurityChatBot
 
         }
         
+        // Hides task Asistant panel and show quiz panel
+        private void ShowQuizPanel()
+        {
+            TaskPanel.Visibility = Visibility.Collapsed;
+            QuizPanel.Visibility = Visibility.Visible;
+        }
+
+        // hides quiz panel and brings back task assistant panel
+        private void HideQuizPanel()
+        {
+            QuizPanel.Visibility = Visibility.Collapsed;
+            TaskPanel.Visibility = Visibility.Visible;
+        }
 
         //
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
@@ -177,5 +196,158 @@ namespace CyberSecurityChatBot
             LoadTasks();
         }
 
+        // 
+        private void OpenQuizButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowQuizPanel();
+            ScoreTextBlock.Text = "Score: 0";
+            _quizManager.ResetQuiz();
+
+            StartQuizButton.Visibility = Visibility.Visible;
+
+            QuestionTextBlock.Text = "Press Start Quiz to begin";
+            FeedbackTextBlock.Text = "";
+            ScoreTextBlock.Text = "Score: 0";
+
+            OptionA.Visibility = Visibility.Collapsed;
+            OptionB.Visibility = Visibility.Collapsed;
+            OptionC.Visibility = Visibility.Collapsed;
+            OptionD.Visibility = Visibility.Collapsed;
+
+            SubmitAnswerButton.Visibility = Visibility.Collapsed;
+            NextQuestionButton.Visibility = Visibility.Collapsed;
+        }
+
+        // 
+        private void StartQuizButton_Click(object sender, RoutedEventArgs e)
+        {
+            _quizManager.ResetQuiz();
+            SubmitAnswerButton.IsEnabled = true;
+            SubmitAnswerButton.Visibility = Visibility.Visible;
+            LoadQuestion();
+            StartQuizButton.Visibility = Visibility.Collapsed;
+            FeedbackTextBlock.Text = "";
+        }
+
+        //
+        private void SubmitAnswerButton_Click(object sender, RoutedEventArgs e)
+        {
+            string answer = "";
+
+            if (OptionA.IsChecked == true) answer = "A";
+            else if (OptionB.IsChecked == true) answer = "B";
+            else if (OptionC.IsChecked == true) answer = "C";
+            else if (OptionD.IsChecked == true) answer = "D";
+
+            if (string.IsNullOrEmpty(answer))
+            {
+                MessageBox.Show("Please select an answer");
+                return;
+            }
+
+            bool correct = _quizManager.SubmitAnswer(answer);
+            string feedback = _quizManager.GetFeedback();
+
+            if (correct)
+            {
+                FeedbackTextBlock.Text = "Correct!\n\n" + "Explanation: " + feedback;
+            }
+            else
+            {
+                FeedbackTextBlock.Text =
+                    "Incorrect.\n\n" + 
+                    "Correct Answer: " +
+                    _quizManager.GetCorrectAnswer() +
+                    "\n\nExplanation: " +
+                    feedback;
+            }
+
+            NextQuestionButton.Visibility = Visibility.Visible;
+            SubmitAnswerButton.IsEnabled = false; 
+        }
+
+        //
+        private void NextQuestionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_quizManager.IsFinished())
+            {
+                MessageBox.Show(
+                    $"Quiz Complete!\n\n" +
+                    $"Score: {_quizManager.GetScore()}/" +
+                    $"{_quizManager.GetTotalQuestions()}\n\n" +
+                    _quizManager.GetFinalMessage());
+
+                HideQuizPanel();
+                StartQuizButton.Visibility = Visibility.Collapsed;//visible here
+                return;
+            }
+            SubmitAnswerButton.IsEnabled = true;
+            LoadQuestion();
+        }
+
+
+        //get the quiestion, display it with the options and updates the score
+        private void LoadQuestion()
+        {
+            QuizQuestion question = _quizManager.GetCurrentQuestion();
+
+            QuestionTextBlock.Text = question.Question;
+
+            ScoreTextBlock.Text = $"Score: {_quizManager.GetScore()}/{_quizManager.GetTotalQuestions()}";
+
+            OptionA.Content = "";
+            OptionB.Content = "";
+            OptionC.Content = "";
+            OptionD.Content = "";
+
+            OptionA.Visibility = Visibility.Collapsed;
+            OptionB.Visibility = Visibility.Collapsed;
+            OptionC.Visibility = Visibility.Collapsed;
+            OptionD.Visibility = Visibility.Collapsed;
+
+            if (question.Options.Count > 0)
+            {
+                OptionA.Content = question.Options[0];
+                OptionA.Visibility = Visibility.Visible;
+            }
+
+
+            if (question.Options.Count > 1)
+            {
+                OptionB.Content = question.Options[1];
+                OptionB.Visibility = Visibility.Visible;
+            }
+
+
+            if (question.Options.Count > 2)
+            {
+                OptionC.Content = question.Options[2];
+                OptionC.Visibility = Visibility.Visible;
+            }
+
+
+            if (question.Options.Count > 3)
+            {
+                OptionD.Content = question.Options[3];
+                OptionD.Visibility = Visibility.Visible;
+            }
+
+            OptionA.IsChecked = false;
+            OptionB.IsChecked = false;
+            OptionC.IsChecked = false;
+            OptionD.IsChecked = false;
+
+            FeedbackTextBlock.Text = "";
+            NextQuestionButton.Visibility = Visibility.Collapsed;
+
+            if (_quizManager.GetCurrentQuestionNumber() == _quizManager.GetTotalQuestions())
+            {
+                NextQuestionButton.Content = "Finish Quiz";
+            }
+            else
+            {
+                NextQuestionButton.Content = "Next Question";
+            }
+        }
     }
 }

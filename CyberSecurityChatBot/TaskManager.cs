@@ -33,17 +33,31 @@ namespace CyberSecurityChatBot
         //Mark a task as complete
         public void MarkAsComplete(int id)
         {
-            _storage.MarkAsComplete(id);
+            List<CyberTask> tasks = _storage.LoadTasks();
+            CyberTask? task = tasks.FirstOrDefault(t => t.Id == id);
+            
+            if (task != null)
+            {
+                _storage.MarkAsComplete(id);
+                ActivityLogger.Log($"Task marked complete: '{task.Title}'");
+            }
 
-            ActivityLogger.Log($"Task marked complete (ID: {id})");
+           ;
         }
 
         //Delete task
         public void DeleteTask(int id)
         {
-            _storage.DeleteTask(id);
+            List<CyberTask> tasks = _storage.LoadTasks();
 
-            ActivityLogger.Log($"Task deleted (ID: {id})");
+            CyberTask? task = tasks.FirstOrDefault(t => t.Id == id);
+           
+            if (task != null)
+            {
+                ActivityLogger.Log($"Task deleted: '{task.Title}'");
+                _storage.DeleteTask(id);
+
+            }
             
         }
     }

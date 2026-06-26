@@ -38,7 +38,7 @@ namespace CyberSecurityChatBot
         }
 
         //Get all entries (for "show more")
-        public string GetFullLog()
+        public static string GetFullLog()
         {
             if (_log.Count == 0)
             {
@@ -55,7 +55,7 @@ namespace CyberSecurityChatBot
         }
 
         //Get total number of log entries
-        public int GetCount()
+        public static int GetCount()
         {
             return _log.Count;
         }
