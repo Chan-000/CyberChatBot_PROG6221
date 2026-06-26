@@ -34,6 +34,11 @@ namespace CyberSecurityChatBot
                 result += $"{i + 1}. {recentEntries[i]}\n";
             }
 
+            if (_log.Count > count)
+            {
+                result += "\nType 'show more' to see the full activity history.";
+            }
+
             return result;
         }
 

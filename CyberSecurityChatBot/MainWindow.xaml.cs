@@ -246,6 +246,7 @@ namespace CyberSecurityChatBot
         // 
         private void StartQuizButton_Click(object sender, RoutedEventArgs e)
         {
+            ActivityLogger.Log("Quiz started");
             _quizManager.ResetQuiz();
             SubmitAnswerButton.IsEnabled = true;
             SubmitAnswerButton.Visibility = Visibility.Visible;
@@ -296,6 +297,7 @@ namespace CyberSecurityChatBot
         {
             if (_quizManager.IsFinished())
             {
+                ActivityLogger.Log($"Quiz completed - score: {_quizManager.GetScore()} out of {_quizManager.GetTotalQuestions()}");
                 MessageBox.Show(
                     $"Quiz Complete!\n\n" +
                     $"Score: {_quizManager.GetScore()}/" +

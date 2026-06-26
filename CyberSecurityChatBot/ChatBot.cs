@@ -27,7 +27,7 @@ namespace CyberSecurityChatBot
         private string lastTopic = "";
 
         //
-        private string lastTrackCreated = "";
+        private string lastTaskCreated = "";
 
         //Constructor: Initialises all helper classes
         public ChatBot()
@@ -75,24 +75,28 @@ namespace CyberSecurityChatBot
                     .Replace("don't forget", "")
                     .Trim();
 
-                ActivityLogger.Log($"Reminder set for '{reminderText}'");
-                return $"Got it! I'll remind you '{reminderText}'.";
+                ActivityLogger.Log($"Reminder set: '{lastTaskCreated}' {reminderText}'");
+                return $"Got it! I'll remind you about '{lastTaskCreated}' {reminderText}.";
             }
 
             // Add task intent
             if (input.Contains("add task") ||
             input.Contains("add a task") ||
             input.Contains("create task") ||
-            input.Contains("l need to") ||
-            input.Contains("enable"))
+            input.Contains("i need to") ||
+            input.Contains("enable")||
+            input.Contains("set up"))
 
             {
+                ActivityLogger.Log( $"NLP recognised task intent from: '{input}'");
+
                 string title = input;
                 title = title.Replace("add task", "");
                 title = title.Replace("add a task", "");
                 title = title.Replace("create task", "");
-                title = title.Replace("l need to", "");
+                title = title.Replace("i need to", "");
                 title = title.Replace("enable", "Enable");
+                title = title.Replace("set up", "");
 
                 title = title.Trim();
 
@@ -102,9 +106,9 @@ namespace CyberSecurityChatBot
                 }
 
                 taskManager.AddTask(title, "Added through chatbot", "No reminder");
-                lastTrackCreated = title;
+                lastTaskCreated = title;
 
-                return $"Task added: '{title}'. Would you like to set a reminder for this task";
+                return $"Task added: '{title}'. Would you like to set a reminder for this task?";
             }
 
             // quiz intent
@@ -114,7 +118,7 @@ namespace CyberSecurityChatBot
                 input.Contains("test my knowledge") ||
                 input.Contains("play the game"))
             {
-                ActivityLogger.Log("Quiz activated");
+                
                 return "QUIZ_REQUEST";
             }
 
@@ -151,7 +155,10 @@ namespace CyberSecurityChatBot
             {
                 return ActivityLogger.GetRecentLog();
             }
-
+            if (input.Contains("show more"))
+            {
+                return ActivityLogger.GetFullLog();
+            }
             
             //Capture user name 
             if (awaitingName)
@@ -213,6 +220,8 @@ namespace CyberSecurityChatBot
                     if (input.Contains(keyword))
                     {
                         lastTopic = keyword;
+
+                        ActivityLogger.Log($"Keyword matched: '{keyword}' - response delivered");
                         break;
                     }
                 }
