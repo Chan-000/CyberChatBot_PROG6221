@@ -94,3 +94,9 @@ https://youtu.be/huc7DtpOgII
 - Personalized chatbot interaction
 - Complete POE functionality
 
+## task json is here
+CyberSecurityChatBot
+ └── bin
+      └── Debug
+           └── net8.0-windows
+                └── tasks.json
