@@ -91,8 +91,34 @@ namespace CyberSecurityChatBot
             // process chatbot response
             string botResponse = chatBot.ProcessInput(userMessage);
 
-            // display bot response
-            AppendBotMessage(botResponse);
+            // display bot response and NLP integration  
+            if (botResponse == "QUIZ_REQUEST")
+            {
+                ShowQuizPanel();
+
+                QuestionTextBlock.Text = "Press Start Quiz to begin";
+                FeedbackTextBlock.Text = "";
+                ScoreTextBlock.Text = "Score: 0";
+
+                StartQuizButton.Visibility = Visibility.Visible;
+
+                OptionA.Visibility = Visibility.Collapsed;
+                OptionB.Visibility = Visibility.Collapsed;
+                OptionC.Visibility = Visibility.Collapsed;
+                OptionD.Visibility = Visibility.Collapsed;
+
+                SubmitAnswerButton.Visibility = Visibility.Collapsed;
+                NextQuestionButton.Visibility = Visibility.Collapsed;
+
+                AppendBotMessage("Opening Cybersecurity Quiz... You can click START QUIZ on the left panel");
+            }
+            else
+            {
+                AppendBotMessage(botResponse);
+            }
+           
+            //refresh task list
+            LoadTasks();
 
             //  clear input box
             UserInputTextBox.Clear();
@@ -200,7 +226,6 @@ namespace CyberSecurityChatBot
         private void OpenQuizButton_Click(object sender, RoutedEventArgs e)
         {
             ShowQuizPanel();
-            ScoreTextBlock.Text = "Score: 0";
             _quizManager.ResetQuiz();
 
             StartQuizButton.Visibility = Visibility.Visible;

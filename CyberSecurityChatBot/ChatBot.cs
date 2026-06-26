@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Windows.Markup;
 
 
 namespace CyberSecurityChatBot
@@ -15,6 +17,8 @@ namespace CyberSecurityChatBot
         private KeywordResponder keywordResponder;
         private SentimentDetector sentimentDetector;
         private MemoryStore memoryStore;
+        private TaskManager taskManager;
+        private ActivityLogger activityLogger;
 
         // tracks whether the bot is waiting for name
         private bool awaitingName = true;
@@ -22,12 +26,17 @@ namespace CyberSecurityChatBot
         //Stores last discussed topic
         private string lastTopic = "";
 
+        //
+        private string lastTrackCreated = "";
+
         //Constructor: Initialises all helper classes
         public ChatBot()
         {
             keywordResponder = new KeywordResponder();
             sentimentDetector = new SentimentDetector();
             memoryStore = new MemoryStore();
+            taskManager = new TaskManager();
+            activityLogger = new ActivityLogger();
         }
 
         // Initial greeting shown at startup
@@ -38,9 +47,9 @@ namespace CyberSecurityChatBot
         }
 
         // Main chatbot processing method
-        public string ProcessInput (string input)
+        public string ProcessInput(string input)
         {
-            
+
             // prevent null errors
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -49,16 +58,101 @@ namespace CyberSecurityChatBot
 
             input = input.ToLower().Trim();
 
+            //========== NLP INTENT DETECTION ============
+
+            //Reminder intent
+            if (input.Contains("remind me") ||
+                input.Contains("reminder") ||
+                input.Contains("set a reminder") ||
+                input.Contains("remind me to") ||
+                input.Contains("don't forget"))
+            {
+                string reminderText = input
+                    .Replace("remind me", "")
+                    .Replace("reminder", "")
+                    .Replace("set a reminder", "")
+                    .Replace("remind me to", "")
+                    .Replace("don't forget", "")
+                    .Trim();
+
+                ActivityLogger.Log($"Reminder set for '{reminderText}'");
+                return $"Got it! I'll remind you '{reminderText}'.";
+            }
+
+            // Add task intent
+            if (input.Contains("add task") ||
+            input.Contains("add a task") ||
+            input.Contains("create task") ||
+            input.Contains("l need to") ||
+            input.Contains("enable"))
+
+            {
+                string title = input;
+                title = title.Replace("add task", "");
+                title = title.Replace("add a task", "");
+                title = title.Replace("create task", "");
+                title = title.Replace("l need to", "");
+                title = title.Replace("enable", "Enable");
+
+                title = title.Trim();
+
+                if (string.IsNullOrWhiteSpace(title))
+                {
+                    return "Please provide a task title.";
+                }
+
+                taskManager.AddTask(title, "Added through chatbot", "No reminder");
+                lastTrackCreated = title;
+
+                return $"Task added: '{title}'. Would you like to set a reminder for this task";
+            }
+
+            // quiz intent
+            if (input.Contains("start quiz") ||
+                input.Contains("take quiz") ||
+                input.Contains("quiz me") ||
+                input.Contains("test my knowledge") ||
+                input.Contains("play the game"))
+            {
+                ActivityLogger.Log("Quiz activated");
+                return "QUIZ_REQUEST";
+            }
+
+            //view tasks
+            if (input.Contains("show tasks") ||
+                input.Contains("my tasks") ||
+                input.Contains("view tasks"))
+            {
+                List<CyberTask> tasks = taskManager.GetAllTasks();
+
+                if (tasks.Count == 0)
+                {
+                    return "You currently have no tasks.";
+                }
+                string result = "Your Tasks:\n\n";
+
+                foreach (CyberTask task in tasks)
+                {
+                    string status = task.IsComplete ? "Completed" : "Pending";
+                    result += $"ID: {task.Id}\n";
+                    result += $"Title: {task.Title}\n";
+                    result += $"Status: {status}\n\n";
+                }
+                return result;
+            }
+
             //Activity log commands
-            if (input.Contains("show activity log")||
-                input.Contains("what have you done for me")||
-                input.Contains("show log")||
-                input.Contains("recent actions")||
+            if (input.Contains("show activity log") ||
+                input.Contains("what have you done") ||
+                input.Contains("what did you do") ||
+                input.Contains("show log") ||
+                input.Contains("recent actions") ||
                 input.Contains("recent activity"))
             {
                 return ActivityLogger.GetRecentLog();
             }
 
+            
             //Capture user name 
             if (awaitingName)
             {
