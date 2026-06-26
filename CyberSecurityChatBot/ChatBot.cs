@@ -13,12 +13,12 @@ namespace CyberSecurityChatBot
     */
     public class ChatBot
     {
-        //Helper classes
+        //Helper classes used by the chatbot
         private KeywordResponder keywordResponder;
         private SentimentDetector sentimentDetector;
         private MemoryStore memoryStore;
         private TaskManager taskManager;
-        private ActivityLogger activityLogger;
+       
 
         // tracks whether the bot is waiting for name
         private bool awaitingName = true;
@@ -36,7 +36,7 @@ namespace CyberSecurityChatBot
             sentimentDetector = new SentimentDetector();
             memoryStore = new MemoryStore();
             taskManager = new TaskManager();
-            activityLogger = new ActivityLogger();
+            
         }
 
         // Initial greeting shown at startup
@@ -59,8 +59,10 @@ namespace CyberSecurityChatBot
             input = input.ToLower().Trim();
 
             //========== NLP INTENT DETECTION ============
+            // Detects task, reminder, quiz and log requests
+            //using keyword matching and string manipulation
 
-            //Reminder intent
+            //Detects reminder-related requests
             if (input.Contains("remind me") ||
                 input.Contains("reminder") ||
                 input.Contains("set a reminder") ||
@@ -79,7 +81,7 @@ namespace CyberSecurityChatBot
                 return $"Got it! I'll remind you about '{lastTaskCreated}' {reminderText}.";
             }
 
-            // Add task intent
+            //Detect task creation requests and create tasks automatically
             if (input.Contains("add task") ||
             input.Contains("add a task") ||
             input.Contains("create task") ||
@@ -111,7 +113,7 @@ namespace CyberSecurityChatBot
                 return $"Task added: '{title}'. Would you like to set a reminder for this task?";
             }
 
-            // quiz intent
+            //Detect quiz requests and signal the GUI launch the quiz
             if (input.Contains("start quiz") ||
                 input.Contains("take quiz") ||
                 input.Contains("quiz me") ||
@@ -122,7 +124,7 @@ namespace CyberSecurityChatBot
                 return "QUIZ_REQUEST";
             }
 
-            //view tasks
+            //Display all stored tasks to the user
             if (input.Contains("show tasks") ||
                 input.Contains("my tasks") ||
                 input.Contains("view tasks"))
@@ -145,7 +147,7 @@ namespace CyberSecurityChatBot
                 return result;
             }
 
-            //Activity log commands
+            //Display recent activity log entries
             if (input.Contains("show activity log") ||
                 input.Contains("what have you done") ||
                 input.Contains("what did you do") ||
@@ -155,6 +157,7 @@ namespace CyberSecurityChatBot
             {
                 return ActivityLogger.GetRecentLog();
             }
+            //Display the complete activity history
             if (input.Contains("show more"))
             {
                 return ActivityLogger.GetFullLog();

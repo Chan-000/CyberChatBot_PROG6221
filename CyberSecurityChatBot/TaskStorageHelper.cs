@@ -9,8 +9,14 @@ using System.Windows.Input;
 
 namespace CyberSecurityChatBot
 {
+    /*
+     * The TaskStorageHelper class is responsible for reading and writing 
+     * task data to the tasks.json file
+     * It provide CRUD operations 
+     */
     public class TaskStorageHelper
     {
+        // path of the JSON file used to store class
         private const string FilePath = "tasks.json";
 
         //load all task from json file
@@ -48,7 +54,8 @@ namespace CyberSecurityChatBot
             }
         }
 
-        // Add a new task
+        // Creates a new task and saves it to the JSON file
+        // a unique ID is generated automatically
         public void AddTasks(string title, string description, string reminder)
         {
             List<CyberTask> tasks = LoadTasks();
@@ -69,7 +76,8 @@ namespace CyberSecurityChatBot
             SaveTasks(tasks);
         }
 
-        //Mark task as completed
+        //Mark a selected task as completed 
+        // and saves the updated list
         public void MarkAsComplete(int id)
         {
             List<CyberTask> tasks = LoadTasks();
@@ -83,7 +91,8 @@ namespace CyberSecurityChatBot
             }
         }
 
-        // delete a task
+        // delete a task from json file
+        // and saves the updated list
         public void DeleteTask(int id)
         {
             List<CyberTask> tasks = LoadTasks();

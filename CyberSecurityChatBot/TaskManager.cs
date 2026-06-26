@@ -3,19 +3,26 @@ using System.Collections.Generic;
 
 namespace CyberSecurityChatBot
 {
-    // handles task-related business logic
+    /*
+     * The TaskManager class handles all task-related operations
+     * it acts as the middle layer between a chatbot and the JSON storage system
+     */
+
     public class TaskManager
     {
+        // helper class responsible for reading and writing tasks.json
         private readonly TaskStorageHelper _storage;
 
+        // constructor to create storage helper object
         public TaskManager()
         {
             _storage = new TaskStorageHelper();
             
         }
 
-        //Creates a new task
-        // Returns a confirmation message
+        //Adds new tasks to storage
+        //records the action in the activity log
+        //return a confirmation message for the uer
         public string AddTask(string title, string description, string reminder)
         {
             _storage.AddTasks(title, description, reminder);
@@ -30,7 +37,7 @@ namespace CyberSecurityChatBot
             return _storage.LoadTasks();
         }
 
-        //Mark a task as complete
+        //Mark a task as complete and update the task in JSON storage
         public void MarkAsComplete(int id)
         {
             List<CyberTask> tasks = _storage.LoadTasks();
@@ -45,7 +52,7 @@ namespace CyberSecurityChatBot
            ;
         }
 
-        //Delete task
+        //Delete task from storage 
         public void DeleteTask(int id)
         {
             List<CyberTask> tasks = _storage.LoadTasks();
@@ -53,7 +60,8 @@ namespace CyberSecurityChatBot
             CyberTask? task = tasks.FirstOrDefault(t => t.Id == id);
            
             if (task != null)
-            {
+            { 
+                //record deletion action
                 ActivityLogger.Log($"Task deleted: '{task.Title}'");
                 _storage.DeleteTask(id);
 

@@ -142,7 +142,7 @@ namespace CyberSecurityChatBot
             ChatDisplay.Text += "\nCyberBot: " + message + "\n";
         }
 
-        //
+        //Reloads task from task.json and displays them
         private void LoadTasks()
         {
             TaskListBox.ItemsSource = null;
@@ -150,21 +150,21 @@ namespace CyberSecurityChatBot
 
         }
         
-        // Hides task Asistant panel and show quiz panel
+        // Hides task Asistant panel and displays quiz panel
         private void ShowQuizPanel()
         {
             TaskPanel.Visibility = Visibility.Collapsed;
             QuizPanel.Visibility = Visibility.Visible;
         }
 
-        // hides quiz panel and brings back task assistant panel
+        // hides quiz panel and brings back the task assistant panel
         private void HideQuizPanel()
         {
             QuizPanel.Visibility = Visibility.Collapsed;
             TaskPanel.Visibility = Visibility.Visible;
         }
 
-        //
+        //Opens the Cybersecurity Quiz panel and prepares the quiz panel
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
             string title = TaskTitleTextBox.Text.Trim();
@@ -188,7 +188,7 @@ namespace CyberSecurityChatBot
 
         }
 
-        //
+        //Completes a task from Task panel
         private void CompleteTaskButton_Click(object sender, RoutedEventArgs e)
         {
             CyberTask? selectedTask = TaskListBox.SelectedItem as CyberTask;
@@ -204,7 +204,7 @@ namespace CyberSecurityChatBot
             LoadTasks();
         }
 
-        //
+        //deletes a task from Task panel
         private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
         {
             CyberTask? selectedTask = TaskListBox.SelectedItem as CyberTask;
@@ -222,7 +222,7 @@ namespace CyberSecurityChatBot
             LoadTasks();
         }
 
-        // 
+        // Open the Cybersecurity Quiz panel and prepares the quiz start screen
         private void OpenQuizButton_Click(object sender, RoutedEventArgs e)
         {
             ShowQuizPanel();
@@ -243,7 +243,7 @@ namespace CyberSecurityChatBot
             NextQuestionButton.Visibility = Visibility.Collapsed;
         }
 
-        // 
+        // Starts a new quiz session and logs the action
         private void StartQuizButton_Click(object sender, RoutedEventArgs e)
         {
             ActivityLogger.Log("Quiz started");
@@ -255,7 +255,7 @@ namespace CyberSecurityChatBot
             FeedbackTextBlock.Text = "";
         }
 
-        //
+        //Validates the selecetd answer and displays feedback + explanaytion
         private void SubmitAnswerButton_Click(object sender, RoutedEventArgs e)
         {
             string answer = "";
@@ -292,7 +292,7 @@ namespace CyberSecurityChatBot
             SubmitAnswerButton.IsEnabled = false; 
         }
 
-        //
+        //Loads the next question or completes the quiz
         private void NextQuestionButton_Click(object sender, RoutedEventArgs e)
         {
             if (_quizManager.IsFinished())
@@ -313,7 +313,7 @@ namespace CyberSecurityChatBot
         }
 
 
-        //get the quiestion, display it with the options and updates the score
+        //Loads the current quiz question and displays available answer question
         private void LoadQuestion()
         {
             QuizQuestion question = _quizManager.GetCurrentQuestion();
