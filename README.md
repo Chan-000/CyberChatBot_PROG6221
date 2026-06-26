@@ -68,8 +68,8 @@ The file properties should be Build Action = Content and Copy to Output Director
 ## GitHub Actions CI
 <img width="650" height="198" alt="CI Actions" src="https://github.com/user-attachments/assets/5220ed7c-9864-4bd7-873c-053ccac50e2f" />
 
-## YouTube video link
-https://youtu.be/vEsRQTA_Swo
+## YouTube video link Part 3
+https://youtu.be/huc7DtpOgII
 
 ### Releases
 

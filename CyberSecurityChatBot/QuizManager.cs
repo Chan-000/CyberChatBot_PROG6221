@@ -7,12 +7,20 @@ using System.Threading.Tasks;
 
 namespace CyberSecurityChatBot
 {
+    /*
+     * Handles all quiz functionality
+     * It stores quiz questions and track user progress
+     * calculates scores, provides feedback 
+     * manages quiz completion
+     */
     public class QuizManager
     {
+        //Stores and tracks
         private List<QuizQuestion> _questions;
         private int _currentIndex;
         private int _score;
 
+        //Creates and loads all cybersecurity questions
         public QuizManager()
         {
             _questions = new List<QuizQuestion>
@@ -171,11 +179,14 @@ namespace CyberSecurityChatBot
             _score = 0;
         }
 
+        //return the current quiz question to the user
         public QuizQuestion GetCurrentQuestion()
         {
             return _questions[_currentIndex];
         }
 
+        //checks whether the user's and is correct 
+        // and increases score if its correct
         public bool SubmitAnswer(string answer)
         {
             bool correct = answer.Trim().Equals(_questions[_currentIndex].CorrectAnswer, System.StringComparison.OrdinalIgnoreCase);
@@ -187,12 +198,13 @@ namespace CyberSecurityChatBot
             return correct;
         }
 
+        //return the explanation for the previous answered question
         public string GetFeedback()
         {
             return _questions[_currentIndex - 1].Explanation;
         }
 
-        //
+        //return the correct answer for the previous question
         public string GetCorrectAnswer()
         {
             QuizQuestion question = _questions[_currentIndex - 1];
@@ -205,27 +217,31 @@ namespace CyberSecurityChatBot
             return question.CorrectAnswer;
         }
 
-        //
+        //return the current question number
         public int GetCurrentQuestionNumber()
         {
             return _currentIndex + 1;
         }
 
+        //Checks whether all quiz questions have been answered
         public bool IsFinished()
         {
             return _currentIndex >= _questions.Count;
         }
 
+        //return the user's current score
         public int GetScore()
         {
             return _score;
         }
 
+        //return total number of questions
         public  int GetTotalQuestions()
         {
             return _questions.Count;
         }
 
+        //give a personalised feedback based on the user's score
         public string GetFinalMessage()
         {
             double percentage = (double)_score / _questions.Count * 100;
@@ -238,6 +254,7 @@ namespace CyberSecurityChatBot
                 return "Keep learning! Cybersecurity is important for everyone.";
         }
 
+        // resets the quiz so that the user can start from the beginning
         public void ResetQuiz()
         {
             _currentIndex = 0;
